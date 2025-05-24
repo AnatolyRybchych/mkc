@@ -1,9 +1,12 @@
 from mkc.type import Type
+from mkc.depends import Depends
 
-class Typedef(Type):
+class Typedef(Type, Depends):
     def __init__(self, type: Type, name: str):
-        super().__init__(name)
+        Type.__init__(self, name)
+        Depends.__init__(self)
         self.type = type
+        self.depend_on(type)
         type.typedefs.append(self)
 
     def __str__(self):
