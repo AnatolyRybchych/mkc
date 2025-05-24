@@ -33,17 +33,16 @@ class File:
         for typedef in self.typedefs:
             res += [f'{typedef};']
 
-        if self.typedefs and self.func_decls:
+        for struct in self.structs:
+            res += ['', f'{struct};']
+
+        if self.structs and self.func_decls:
             res += ['']
 
         for func_decl in self.func_decls:
             res += [f'{func_decl};']
 
-
         for func in self.funcs:
             res += ['', f'{func}']
-
-        for struct in self.structs:
-            res += ['', f'{struct};']
 
         return '\n'.join(res)

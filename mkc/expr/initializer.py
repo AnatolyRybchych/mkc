@@ -31,7 +31,7 @@ class Initializer(Expr):
                 else:
                     initializers += [f'.{field} = {expr.gen()},']
 
-            return f'{t.type_name()}' + '{' + ''.join(initializers) + '}'
+            return f'({t.type_name()})' + '{' + ''.join(initializers) + '}'
 
         raise Exception(f'Could not have an initializer for {self.type.type_name()}')
 
