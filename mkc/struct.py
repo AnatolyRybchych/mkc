@@ -21,6 +21,16 @@ class Struct(Type, Depends):
     
     def feild_declaration(self, name):
         return f'struct {self.name} {name}'
+    
+    def get_fields(self) -> list[str]:
+        return [name for type, name in self.fields]
+    
+    def get_field_type(self, field: str) -> Type:
+        for type, name in self.fields:
+            if name == field:
+                return type
+        
+        raise Exception(f'{self.type_name()} does not have a field "{field}"')
 
     def __str__(self) -> str:
         return f'{self.type_name()}''{' + ''.join(f'{type.feild_declaration(name)};' for type, name in self.fields) + '}'

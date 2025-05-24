@@ -17,9 +17,9 @@ mkpoint = c.Func(point_t, 'make_point', (c.int, 'x'), (c.int, 'y'))
 main.declare(mkpoint)
 main.declare(mkpoint.func_decl())
 
-res = mkpoint.body.declare(point_t, 'res')
-mkpoint.body.add_line(res.var()['x'].assign(0))
-mkpoint.body.add_line(res.var()['y'].assign(1))
-mkpoint.body.add_line(c.Ret(res.var()))
+mkpoint.body.add_line(c.Ret(c.Initializer(point_t, {
+    'x': mkpoint['x'],
+    'y': mkpoint['y']
+})))
 
 print(main)

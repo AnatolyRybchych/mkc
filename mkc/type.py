@@ -13,6 +13,17 @@ class Type:
         from mkc.ptr import Ptr
         return Ptr(self)
 
+    def get_struct(self):
+        from mkc.struct import Struct
+        from mkc.typedef import Typedef
+
+        if isinstance(self, Struct):
+            return self
+        elif isinstance(self, Typedef):
+            return self.type.get_struct()
+
+        return None
+
 def field_decl(target: tuple[Type, str] | Type) -> str:
     if type(target) is Type:
         return target.type_name()

@@ -12,6 +12,7 @@ from mkc.expr.var import Var
 from mkc.expr.subscript import Subscript
 from mkc.expr.assign import Assign
 from mkc.expr.literal import Literal
+from mkc.expr.initializer import Initializer
 from mkc.consturction.ret import Ret
 
 class Codebase(TranslationUnit):
