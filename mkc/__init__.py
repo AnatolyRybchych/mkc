@@ -8,6 +8,11 @@ from mkc.ptr import Ptr
 from mkc.func_decl import FuncDecl
 from mkc.array import Array
 from mkc.func import Func
+from mkc.expr.var import Var
+from mkc.expr.subscript import Subscript
+from mkc.expr.assign import Assign
+from mkc.expr.literal import Literal
+from mkc.consturction.ret import Ret
 
 class Codebase(TranslationUnit):
     def __init__(self):
