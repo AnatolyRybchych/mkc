@@ -3,6 +3,7 @@ from mkc.struct import Struct
 from mkc.typedef import Typedef
 from mkc.func_decl import FuncDecl
 from mkc.func import Func
+from mkc.type import Type
 
 class File:
     def __init__(self, path: str, translation_unit):
@@ -14,6 +15,16 @@ class File:
         self.func_decls: list[FuncDecl] = []
         self.funcs: list[Func] = []
         self.translation_unit: TranslationUnit = translation_unit
+
+    def struct(self, name: str) -> Struct:
+        new_struct = Struct(name, self)
+        self.declare(new_struct)
+        return new_struct
+
+    def func(self, ret: Type, name: str, *args: tuple[Type, str]) -> Func:
+        new_func = Func(self, ret, name, *args)
+        self.declare(new_func)
+        return new_func
 
     def declare(self, target):
         # TODO: check duplicate declarations

@@ -6,10 +6,13 @@ from mkc.consturction.decl_var import DeclVar
 from mkc.expr.var import Var
 
 class Func:
-    def __init__(self, ret: Type, name, *args: tuple[Type, str]):
+    def __init__(self, file, ret: Type, name, *args: tuple[Type, str]):
+        from mkc.file import File
+
         self.func_type = FuncType(ret, *args)
         self.body = Block()
         self.name: str = name
+        self.file: File = file
 
         for arg_type, arg_name in args:
             if arg_name in self.body.vars:
