@@ -23,4 +23,4 @@ class Struct(Type, Depends):
         return f'struct {self.name} {name}'
 
     def __str__(self) -> str:
-        return f'struct {self.type_name()}''{' + ''.join(f'{type.feild_declaration(name)};' for type, name in self.fields) + '}'
+        return f'{self.type_name()}''{' + ''.join(f'{type.feild_declaration(name)};' for type, name in self.fields) + '}'

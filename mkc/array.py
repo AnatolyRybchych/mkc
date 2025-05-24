@@ -1,6 +1,5 @@
 from mkc.type import Type
 from mkc.func_type import FuncType
-from mkc.ptr import Ptr
 
 class Array(Type):
     def __init__(self, type: Type, cnt: int = 0):
