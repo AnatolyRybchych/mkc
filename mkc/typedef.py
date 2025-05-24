@@ -12,7 +12,7 @@ class Typedef(Type, Depends):
 
     def type_name(self):
         return f'{self.name}'
-    
+
     def feild_declaration(self, name):
         return f'{self.name} {name}'
 

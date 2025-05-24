@@ -8,4 +8,5 @@ class FuncDecl:
         self.name: str = name
 
     def __str__(self):
-        return f'{self.func_type.ret_type.type_name()} {self.name}({','.join(f'{field_decl(arg)}' for arg in self.func_type.args)})'
+        return self.func_type.feild_declaration(self.name)
+
