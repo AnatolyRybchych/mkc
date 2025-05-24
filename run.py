@@ -9,8 +9,10 @@ point = c.Struct('Point')
 point.add_field(c.int, 'x')
 point.add_field(c.int, 'y')
 
+point_t = c.Typedef(point, 'Point')
+
 main.declare(point)
-main.declare(c.Typedef(point, 'Point'))
-main.declare(c.Typedef(c.Ptr(point), 'PointPtr'))
+main.declare(c.Typedef(c.Ptr(point_t), 'PointPtr'))
+main.declare(c.FuncDecl(point_t, 'make_point', (c.int, 'x'), (c.int, 'y')))
 
 print(main)
