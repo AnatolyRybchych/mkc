@@ -6,6 +6,7 @@ from mkc.base_type import *
 from mkc.typedef import Typedef
 from mkc.ptr import Ptr
 from mkc.func_decl import FuncDecl
+from mkc.array import Array
 
 class Codebase(TranslationUnit):
     def __init__(self):

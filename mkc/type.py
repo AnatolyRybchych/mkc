@@ -9,6 +9,10 @@ class Type:
     def feild_declaration(self, name: str) -> str:
         raise Exception(f'{type(self)}.feild_declaration({name}) is not defined')
 
+    def ptr_type(self):
+        from mkc.ptr import Ptr
+        return Ptr(self)
+
 def field_decl(target: tuple[Type, str] | Type) -> str:
     if type(target) is Type:
         return target.type_name()

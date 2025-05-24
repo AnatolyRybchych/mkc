@@ -10,7 +10,7 @@ class Struct(Type, Depends):
         self.fields: list[tuple[Type, str]] = []
 
     def add_field(self, type: Type, name: str):
-        is_duplicate = any(typename == name for typename, _ in self.fields)
+        is_duplicate = any(field_name == name for _, field_name in self.fields)
         assert not is_duplicate
 
         self.depend_on(type)
@@ -23,4 +23,4 @@ class Struct(Type, Depends):
         return f'struct {self.name} {name}'
 
     def __str__(self) -> str:
-        return f'struct {self.type_name()}''{' + ';'.join(f'{type.type_name()} {name}' for type, name in self.fields) + '}'
+        return f'struct {self.type_name()}''{' + ''.join(f'{type.feild_declaration(name)};' for type, name in self.fields) + '}'
