@@ -8,7 +8,7 @@ main = codebase.add_new_file('main.c')
 point = c.Struct('Point')
 point.add_field(c.int, 'x')
 point.add_field(c.int, 'y')
-point_t = c.Typedef(point, 'Point')
+point_t = point.typedef()
 
 main.declare(point)
 main.declare(point_t)

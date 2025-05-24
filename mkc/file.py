@@ -5,12 +5,15 @@ from mkc.func_decl import FuncDecl
 from mkc.func import Func
 
 class File:
-    def __init__(self, path: str):
+    def __init__(self, path: str, translation_unit):
+        from mkc.translation_unit import TranslationUnit
+
         self.path = path
         self.typedefs: list[Typedef] = []
         self.structs: list[Struct] = []
         self.func_decls: list[FuncDecl] = []
         self.funcs: list[Func] = []
+        self.translation_unit: TranslationUnit = translation_unit
 
     def declare(self, target):
         # TODO: check duplicate declarations

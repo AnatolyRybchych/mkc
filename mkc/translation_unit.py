@@ -6,14 +6,9 @@ class TranslationUnit:
         self.include_paths = []
         self.link_files = {}
 
-    def add_file(self, file: File):
-        assert file.path not in self.link_files
-
-        self.link_files[file.path] = file
-        return self
-
     def add_new_file(self, filename: str) -> File:
-        file = File(filename)
-        self.add_file(file)
+        assert filename not in self.link_files
+        file = File(filename, self)
+        self.link_files[filename] = file
         return file
 

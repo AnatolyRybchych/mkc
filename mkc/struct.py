@@ -21,10 +21,14 @@ class Struct(Type, Depends):
     
     def feild_declaration(self, name):
         return f'struct {self.name} {name}'
-    
+
     def get_fields(self) -> list[str]:
         return [name for type, name in self.fields]
-    
+
+    def typedef(self, name: str | None = None):
+        from mkc.typedef import Typedef
+        return Typedef(self, name or self.name)
+
     def get_field_type(self, field: str) -> Type:
         for type, name in self.fields:
             if name == field:

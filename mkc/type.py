@@ -13,6 +13,10 @@ class Type:
         from mkc.ptr import Ptr
         return Ptr(self)
 
+    def typedef(self, name: str):
+        from mkc.typedef import Typedef
+        return Typedef(self, name)
+
     def get_struct(self):
         from mkc.struct import Struct
         from mkc.typedef import Typedef
