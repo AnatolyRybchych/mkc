@@ -4,8 +4,9 @@ from mkc.depends import Depends
 
 class Struct(Type, Depends):
     def __init__(self, name: str):
-        Type.__init__(self, f'struct {name}')
+        Type.__init__(self)
         Depends.__init__(self)
+        self.name = name
         self.fields: list[tuple[Type, str]] = []
 
     def add_field(self, type: Type, name: str):
@@ -15,5 +16,11 @@ class Struct(Type, Depends):
         self.depend_on(type)
         self.fields.append((type, name))
 
+    def type_name(self):
+        return f'struct {self.name}'
+    
+    def feild_declaration(self, name):
+        return f'struct {self.name} {name}'
+
     def __str__(self) -> str:
-        return f'struct {self.typename}''{' + ';'.join(f'{type.typename} {name}' for type, name in self.fields) + '}'
+        return f'struct {self.type_name()}''{' + ';'.join(f'{type.type_name()} {name}' for type, name in self.fields) + '}'
