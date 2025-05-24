@@ -4,6 +4,7 @@ from mkc.objfile import ObjFile
 from mkc.struct import Struct
 from mkc.base_type import *
 from mkc.typedef import Typedef
+from mkc.ptr import Ptr
 
 class Codebase(TranslationUnit):
     def __init__(self):
