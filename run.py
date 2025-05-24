@@ -10,4 +10,7 @@ point = c.Struct('Point')
 point.add_field(c.int, 'x')
 point.add_field(c.int, 'y')
 
-print(point)
+point_t = c.Typedef(point, 'Point')
+
+print(point_t, ';')
+print(point, ';')

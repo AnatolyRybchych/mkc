@@ -3,6 +3,7 @@ from mkc.translation_unit import TranslationUnit
 from mkc.objfile import ObjFile
 from mkc.struct import Struct
 from mkc.base_type import *
+from mkc.typedef import Typedef
 
 class Codebase(TranslationUnit):
     def __init__(self):
