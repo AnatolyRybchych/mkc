@@ -3,14 +3,14 @@ from mkc.type import Type
 from mkc.depends import Depends
 
 class Struct(Type, Depends):
-    def __init__(self, name: str, file):
+    def __init__(self, name: str, file = None):
         from mkc.file import File
 
         Type.__init__(self)
         Depends.__init__(self)
         self.name = name
         self.fields: list[tuple[Type, str]] = []
-        self.file: File = file
+        self.file: File | None = file
 
     def add_field(self, type: Type, name: str):
         is_duplicate = any(field_name == name for _, field_name in self.fields)

@@ -5,16 +5,15 @@ import mkc as c
 codebase = c.Codebase()
 main = codebase.add_new_file('main.c')
 
-point = main.struct('Point')
-point.add_field(c.int, 'x')
-point.add_field(c.int, 'y')
-point_t = point.typedef()
-main.declare(point_t)
+days = main.enum('Days', 'MONDAY', 'TUESDAY')
 
-mkpoint = main.func(point_t, 'make_point', (c.int, 'x'), (c.int, 'y'))
+point = main.struct('Point', x = c.int, y = c.int).typedef()
+main.declare(point)
+
+mkpoint = main.func(point, 'make_point', (c.int, 'x'), (c.int, 'y'))
 main.declare(mkpoint.func_decl())
 
-mkpoint.body.add_line(c.Ret(c.Initializer(point_t, {
+mkpoint.body.add_line(c.Ret(c.Initializer(point, {
     'x': mkpoint['x'],
     'y': mkpoint['y']
 })))
