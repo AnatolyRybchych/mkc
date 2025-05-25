@@ -1,8 +1,11 @@
 
 from mkc.file import File
+from mkc.scope import Scope
 
-class TranslationUnit:
-    def __init__(self):
+class TranslationUnit(Scope):
+    def __init__(self, codebase):
+        Scope.__init__(self, Scope.LEVEL_TRANSLATION, codebase)
+
         self.include_paths = []
         self.link_files = {}
 

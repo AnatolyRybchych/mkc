@@ -1,16 +1,16 @@
 
 from mkc.type import Type
 from mkc.depends import Depends
+from mkc.scope import Scope
 
-class Struct(Type, Depends):
-    def __init__(self, name: str, file = None):
-        from mkc.file import File
-
+class Struct(Type, Scope, Depends):
+    def __init__(self, name: str, parent):
         Type.__init__(self)
+        Scope.__init__(self, Scope.LEVEL_BLOCK, parent)
         Depends.__init__(self)
+
         self.name = name
         self.fields: list[tuple[Type, str]] = []
-        self.file: File | None = file
 
     def add_field(self, type: Type, name: str):
         is_duplicate = any(field_name == name for _, field_name in self.fields)

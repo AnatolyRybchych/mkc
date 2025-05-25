@@ -14,14 +14,17 @@ from mkc.operations import Assign, BinOp, GetField, Initializer, Literal, Subscr
 from mkc.operations import Add, Sub, Mul, Div, Mod, Shl, Shr
 from mkc.operations import LessThan, GreaterThen, LessOrEqual, GreaterOrEquals
 from mkc.consturction.ret import Ret
+from mkc.scope import Scope
 
-class Codebase(TranslationUnit):
+class Codebase(Scope):
     def __init__(self):
+        Scope.__init__(self, Scope.LEVEL_TOP, None)
+
         self.object_files = []
         self.include_paths = []
 
     def add_new_obj(self) -> ObjFile:
-        object_file = ObjFile()
+        object_file = ObjFile(self)
         self.object_files.append(object_file)
         return object_file
 

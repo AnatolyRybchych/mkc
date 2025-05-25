@@ -5,10 +5,13 @@ from mkc.func_decl import FuncDecl
 from mkc.func import Func
 from mkc.type import Type
 from mkc.enum import Enum
+from mkc.scope import Scope
 
-class File:
+class File(Scope):
     def __init__(self, path: str, translation_unit):
         from mkc.translation_unit import TranslationUnit
+
+        Scope.__init__(self, Scope.LEVEL_TOP, translation_unit)
 
         self.path = path
         self.typedefs: list[Typedef] = []
@@ -16,7 +19,6 @@ class File:
         self.func_decls: list[FuncDecl] = []
         self.funcs: list[Func] = []
         self.enums: list[Enum] = []
-        self.translation_unit: TranslationUnit = translation_unit
 
     def struct(self, name: str, **fields: Type) -> Struct:
         new_struct = Struct(name, self)

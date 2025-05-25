@@ -4,11 +4,13 @@ from mkc.consturction.line import Line
 from mkc.expr import Expr
 from mkc.operations import Nop, Var
 from mkc.type import Type
+from mkc.scope import Scope
 
-class Block(Construction):
-    def __init__(self):
-        super().__init__()
-        self.vars: dict[str, DeclVar] = {}
+class Block(Construction, Scope):
+    def __init__(self, parent):
+        Construction.__init__(self)
+        Scope.__init__(self, Scope.LEVEL_BLOCK, parent)
+
         self.lines: list[Construction] = []
 
     def add_line(self, line: Expr | Construction) -> Construction:
@@ -17,18 +19,13 @@ class Block(Construction):
             self.lines.append(line)
         elif isinstance(line, Construction):
             if isinstance(line, DeclVar):
-                if line.name in self.vars.keys():
-                    raise Exception (f'Duplicate definnition of the {line.type.feild_declaration(line.name)} variable')
-                self.vars[line.name] = line
+                self.scope_set_var(line)
 
             self.lines.append(line)
         else:
             raise Exception(f'{type(line)} is neither a construction or expression')
 
         return line
-
-    def __getitem__(self, key) -> Var:
-        return self.vars[key].var()
 
     def declare(self, type: Type, name: str, expr: Expr = Nop()) -> DeclVar:
         var = DeclVar(type, name, expr)

@@ -15,13 +15,7 @@ class Func:
         self.file: File = file
 
         for arg_type, arg_name in args:
-            if arg_name in self.body.vars:
-                raise Exception(f'duplicate argument {arg_type.feild_declaration(arg_name)} in {self.func_type.feild_declaration(self.name)}')
-
-            self.body.vars[arg_name] = DeclVar(arg_type, arg_name)
-
-    def __getitem__(self, key: str) -> Var:
-        return self.body[key]
+            self.body.scope_set_var(DeclVar(arg_type, arg_name))
 
     def func_decl(self) -> FuncDecl:
         return FuncDecl(self.func_type, self.name)
