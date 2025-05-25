@@ -1,24 +1,27 @@
 #!/bin/python3
 
 import mkc as c
+import json
 
-print('test', '=', c.Add(c.Add(c.Literal(1), c.Literal(2)), c.Add(c.Literal(3), c.Literal(4))), ';')
-print('test', '=', c.Mul(c.Add(c.Literal(1), c.Literal(2)), c.Add(c.Literal(3), c.Literal(4))), ';')
+one, two, three, four = [c.Literal(num) for num in [1, 2, 3, 4]]
 
-# codebase = c.Codebase()
-# main = codebase.add_new_file('main.c')
+print('test', '=', one + two + three + four, ';')
+print('test', '=', (one + two) % (three + four), ';')
 
-# days = main.enum('Days', 'MONDAY', 'TUESDAY')
+codebase = c.Codebase()
+main = codebase.add_new_file('main.c')
 
-# point = main.struct('Point', x = c.int, y = c.int).typedef()
-# main.declare(point)
+days = main.enum('Days', 'MONDAY', 'TUESDAY')
 
-# mkpoint = main.func(point, 'make_point', (c.int, 'x'), (c.int, 'y'))
-# main.declare(mkpoint.func_decl())
+point = main.struct('Point', x = c.int, y = c.int).typedef()
+main.declare(point)
 
-# mkpoint.body.add_line(c.Ret(c.Initializer(point, {
-#     'x': mkpoint['x'],
-#     'y': mkpoint['y']
-# })))
+mkpoint = main.func(point, 'make_point', (c.int, 'x'), (c.int, 'y'))
+main.declare(mkpoint.func_decl())
 
-# print(main)
+mkpoint.body.add_line(c.Ret(c.Initializer(point, {
+    'x': mkpoint['x'],
+    'y': mkpoint['y']
+})))
+
+print(main)
