@@ -18,7 +18,11 @@ TokenType = main.enum('TokenType', 'END_OF_FILE', 'NAME', 'SPACE',
     'OPEN_PARENTHESIS', 'CLOSE_PARENTHESIS', 'OPEN_CURLY', 'CLOSE_CURLY',
     'SEMICOLON')
 
-point = main.struct('Token', type=TokenType, begin = c.char.ptr_type(), end = c.char.ptr_type()).typedef()
+point = main.struct('Token',
+    type = TokenType,
+    begin = c.char.const().ptr(),
+    end = c.char.const().ptr()).typedef()
+
 main.declare(point)
 
 print(main)

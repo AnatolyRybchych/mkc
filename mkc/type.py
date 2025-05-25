@@ -13,13 +13,20 @@ class Type:
     def full_field_declaration(self, name: str) -> str:
         return self.feild_declaration(name)
 
-    def ptr_type(self):
+    def ptr(self):
         from mkc.ptr import Ptr
         return Ptr(self)
 
     def typedef(self, name: str):
         from mkc.typedef import Typedef
         return Typedef(self, name)
+    
+    def const(self):
+        from mkc.const import Const
+        if isinstance(self, Const):
+            return self
+        else:
+            return Const(self)
 
     def get_struct(self):
         from mkc.struct import Struct
