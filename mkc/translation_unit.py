@@ -4,7 +4,7 @@ from mkc.scope import Scope
 
 class TranslationUnit(Scope):
     def __init__(self, codebase):
-        Scope.__init__(self, Scope.LEVEL_TRANSLATION, codebase)
+        Scope.__init__(self, Scope.LEVEL_TRANS, codebase)
 
         self.include_paths = []
         self.link_files = {}

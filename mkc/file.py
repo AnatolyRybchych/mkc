@@ -7,13 +7,12 @@ from mkc.type import Type
 from mkc.enum import Enum
 from mkc.scope import Scope
 
-class File(Scope):
+class File:
     def __init__(self, path: str, translation_unit):
         from mkc.translation_unit import TranslationUnit
 
-        Scope.__init__(self, Scope.LEVEL_TOP, translation_unit)
-
-        self.path = path
+        self.translation_unit:TranslationUnit = translation_unit
+        self.path: str = path
         self.typedefs: list[Typedef] = []
         self.structs: list[Struct] = []
         self.func_decls: list[FuncDecl] = []
@@ -21,20 +20,19 @@ class File(Scope):
         self.enums: list[Enum] = []
 
     def struct(self, name: str, **fields: Type) -> Struct:
-        new_struct = Struct(name, self)
-        for name, type in fields.items():
-            new_struct.add_field(type, name)
+        new_struct = self.translation_unit.struct(name, **fields)
+        if not new_struct.annonymous:
+            self.declare(new_struct)
 
-        self.declare(new_struct)
         return new_struct
     
     def enum(self, name: str, *fields: tuple[str, int] | str) -> Typedef:
-        new_enum = Enum('', self, *fields).typedef(name)
+        new_enum = Enum('', self.translation_unit, *fields).typedef(name)
         self.declare(new_enum)
         return new_enum
 
     def func(self, ret: Type, name: str, *args: tuple[Type, str]) -> Func:
-        new_func = Func(self, ret, name, *args)
+        new_func = Func(self.translation_unit, ret, name, *args)
         self.declare(new_func)
         return new_func
 

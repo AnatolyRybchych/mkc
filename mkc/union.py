@@ -10,6 +10,7 @@ class Union(Type, Depends):
         self.name = name
         self.fields: list[tuple[Type, str]] = []
         self.file: File | None = file
+        self.annonymous = not name
 
     def add_field(self, type: Type, name: str = ''):
         is_duplicate = any(field_name == name for _, field_name in self.fields)

@@ -4,10 +4,10 @@ class Enum(Type):
     def __init__(self, name: str, file = None, *fields: tuple[str, int] | str):
         from mkc.file import File
         super().__init__()
-        self.annonymous = True
         self.name: str = name
         self.file: File | None = file
         self.fields: list[tuple[str, int|None]] = []
+        self.annonymous = True
 
         for field in fields:
             if type(field) is str:

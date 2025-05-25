@@ -1,8 +1,9 @@
 
 class Type:
     def __init__(self):
-        self.annonymous = False
         self.typedefs = []
+        self.first_definition = None
+        self.annonymous = False
 
     def type_name(self) -> str:
         raise Exception(f'{type(self)}.type_name() is not defined')
