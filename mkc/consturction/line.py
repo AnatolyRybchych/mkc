@@ -6,5 +6,5 @@ class Line(Construction):
         super().__init__()
         self.expr = expr
 
-    def gen(self) -> str:
-        return f'{self.expr.gen()};'
+    def __str__(self) -> str:
+        return f'{self.expr};'

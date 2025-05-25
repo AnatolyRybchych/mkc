@@ -2,8 +2,7 @@ from mkc.consturction import Construction
 from mkc.consturction.decl_var import DeclVar
 from mkc.consturction.line import Line
 from mkc.expr import Expr
-from mkc.expr.var import Var
-from mkc.expr.nop import Nop
+from mkc.operations import Nop, Var
 from mkc.type import Type
 
 class Block(Construction):
@@ -36,5 +35,5 @@ class Block(Construction):
         self.add_line(var)
         return var
 
-    def gen(self) -> str:
-        return '{' + ''.join(f'{line.gen()}' for line in self.lines) + '}'
+    def __str__(self) -> str:
+        return '{' + ''.join(f'{line}' for line in self.lines) + '}'

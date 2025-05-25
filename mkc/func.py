@@ -3,7 +3,7 @@ from mkc.func_decl import FuncDecl
 from mkc.type import Type
 from mkc.consturction.block import Block
 from mkc.consturction.decl_var import DeclVar
-from mkc.expr.var import Var
+from mkc.operations import Var
 
 class Func:
     def __init__(self, file, ret: Type, name, *args: tuple[Type, str]):
@@ -27,4 +27,4 @@ class Func:
         return FuncDecl(self.func_type, self.name)
 
     def __str__(self):
-        return f'{self.func_type.feild_declaration(self.name)} {self.body.gen()}'
+        return f'{self.func_type.feild_declaration(self.name)} {self.body}'

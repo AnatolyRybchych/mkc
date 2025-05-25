@@ -1,7 +1,7 @@
 from mkc.consturction import Construction
 from mkc.type import Type
 from mkc.expr import Expr
-from mkc.expr.nop import Nop
+from mkc.operations import Nop
 
 class DeclVar(Construction):
     def __init__(self, type: Type, name: str, expr: Expr = Nop()):
@@ -10,15 +10,15 @@ class DeclVar(Construction):
         self.name = name
         self.expr = expr
 
-    def gen(self) -> str:
+    def __str__(self) -> str:
         res = self.type.feild_declaration(self.name)
         if not isinstance(self.expr, Nop):
-            res += f'={self.expr.gen()}'
+            res += f'={self.expr}'
         res += ';'
 
         return  res
 
     def var(self):
-        from mkc.expr.var import Var
+        from mkc.operations import Var
         return Var(self)
 
