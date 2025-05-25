@@ -17,4 +17,7 @@ class Typedef(Type, Depends):
         return f'{self.name} {name}'
 
     def __str__(self):
-        return f'typedef {self.type.feild_declaration(self.type_name())}'
+        if self.type.annonymous:
+            return f'typedef {self.type.full_field_declaration(self.type_name())}'
+        else:
+            return f'typedef {self.type.feild_declaration(self.type_name())}'

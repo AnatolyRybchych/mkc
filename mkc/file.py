@@ -26,8 +26,8 @@ class File:
         self.declare(new_struct)
         return new_struct
     
-    def enum(self, name: str, *fields: tuple[str, int] | str) -> Enum:
-        new_enum = Enum(name, self, *fields)
+    def enum(self, name: str, *fields: tuple[str, int] | str) -> Typedef:
+        new_enum = Enum('', self, *fields).typedef(name)
         self.declare(new_enum)
         return new_enum
 
@@ -52,26 +52,34 @@ class File:
         else:
             raise Exception(f'the costruction of type {type(target)} is not ment to be declared')
 
+        return target
+
     def __str__(self):
         # TODO: reorder accrding to dependencies
         res = []
 
+        def cat(var):
+            nonlocal res
+            res += [var]
+            if '{' in var:
+                res += ['']
+
         for typedef in self.typedefs:
-            res += [f'{typedef};']
+            cat(f'{typedef};')
 
         for enum in self.enums:
-            res += ['', f'{enum};']
+            cat(f'{enum};')
 
         for struct in self.structs:
-            res += ['', f'{struct};']
-
-        if self.structs and self.func_decls:
-            res += ['']
+            cat(f'{struct};')
 
         for func_decl in self.func_decls:
-            res += [f'{func_decl};']
+            cat(f'{func_decl};')
+
+        if self.func_decls and self.funcs:
+            cat('')
 
         for func in self.funcs:
-            res += ['', f'{func}']
+            cat(f'{func}')
 
         return '\n'.join(res)

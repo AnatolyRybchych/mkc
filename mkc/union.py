@@ -1,8 +1,7 @@
-
 from mkc.type import Type
 from mkc.depends import Depends
 
-class Struct(Type, Depends):
+class Union(Type, Depends):
     def __init__(self, name: str, file = None):
         from mkc.file import File
 
@@ -12,7 +11,7 @@ class Struct(Type, Depends):
         self.fields: list[tuple[Type, str]] = []
         self.file: File | None = file
 
-    def add_field(self, type: Type, name: str):
+    def add_field(self, type: Type, name: str = ''):
         is_duplicate = any(field_name == name for _, field_name in self.fields)
         assert not is_duplicate
 
@@ -21,15 +20,15 @@ class Struct(Type, Depends):
 
     def type_name(self):
         if not self.name:
-            raise Exception(f'The type of unnamed struct is not accessible')
+            raise Exception(f'The type of unnamed union is not accessible')
         else:
-            return f'struct {self.name}'
+            return f'union {self.name}'
     
     def feild_declaration(self, name):
         if not self.name:
-            raise Exception(f'The type of unnamed struct is not accessible')
+            raise Exception(f'The type of unnamed union is not accessible')
         else:
-            return f'struct {self.name} {name}'
+            return f'union {self.name} {name}'
 
     def full_field_declaration(self, name):
         return f'{self} {name}'
@@ -49,4 +48,4 @@ class Struct(Type, Depends):
         raise Exception(f'{self.type_name()} does not have a field "{field}"')
 
     def __str__(self) -> str:
-        return f'struct {self.name}' + '{' + ''.join(f'{type.full_field_declaration(name)};' for type, name in self.fields) + '}'
+        return f'union {self.name}''{' + ''.join(f'{type.feild_declaration(name)};' for type, name in self.fields) + '}'

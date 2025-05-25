@@ -3,8 +3,8 @@ from mkc.type import Type
 class Enum(Type):
     def __init__(self, name: str, file = None, *fields: tuple[str, int] | str):
         from mkc.file import File
-
         super().__init__()
+        self.annonymous = True
         self.name: str = name
         self.file: File | None = file
         self.fields: list[tuple[str, int|None]] = []
@@ -15,12 +15,8 @@ class Enum(Type):
             else:
                 self.add_field(field[0], field[1])
 
-
-    def type_name(self):
-        return f'enum {self.name}'
-
-    def feild_declaration(self, name):
-        return f'enum {self.name} {name}'
+    def full_field_declaration(self, name):
+        return f'{self} {name}'
 
     def add_field(self, name: str, value: int|None = None):
         assert not any(existing_name == name for existing_name, _ in self.fields)
@@ -33,4 +29,4 @@ class Enum(Type):
 
     def __str__(self):
         fields = [f'{name}{value and f'= {value}' or ''}' for name, value in self.fields]
-        return f'{self.type_name()}' + '{' + ','.join(fields) + '}'
+        return f'enum {self.name}' + '{' + ','.join(fields) + '}'

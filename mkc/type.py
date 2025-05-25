@@ -1,6 +1,7 @@
 
 class Type:
     def __init__(self):
+        self.annonymous = False
         self.typedefs = []
 
     def type_name(self) -> str:
@@ -8,6 +9,9 @@ class Type:
 
     def feild_declaration(self, name: str) -> str:
         raise Exception(f'{type(self)}.feild_declaration({name}) is not defined')
+    
+    def full_field_declaration(self, name: str) -> str:
+        return self.feild_declaration(name)
 
     def ptr_type(self):
         from mkc.ptr import Ptr

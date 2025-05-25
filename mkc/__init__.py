@@ -2,6 +2,7 @@
 from mkc.translation_unit import TranslationUnit
 from mkc.objfile import ObjFile
 from mkc.struct import Struct
+from mkc.union import Union
 from mkc.base_type import *
 from mkc.typedef import Typedef
 from mkc.ptr import Ptr
