@@ -43,6 +43,11 @@ class Expr:
         from mkc.operations import Literal
         return Mod(self, Literal.expr_or_loteral(rhs))
 
+    def __call__(self, *args):
+        from mkc.operations import Call
+        from mkc.operations import Literal
+        return Call(self, *(Literal.expr_or_loteral(arg) for arg in args))
+
     def __getitem__(self, key):
         from mkc.operations import Subscript
         from mkc.operations import GetField

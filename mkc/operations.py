@@ -71,7 +71,23 @@ class GetField(Expr):
         self.precedence = 1
 
     def __str__(self):
-        return f'({self.childs[0]}).{self.field}'
+        if self.childs[0].precedence > self.precedence:
+            return f'({self.childs[0]}).{self.field}'
+        else:
+            return f'{self.childs[0]}.{self.field}'
+
+class Call(Expr):
+    def __init__(self, callable: Expr, *args: Expr):
+        super().__init__((callable, *args))
+        self.precedence = 1
+
+    def __str__(self):
+        if self.childs[0].precedence > self.precedence:
+            res = f'({self.childs[0]})'
+        else:
+            res = f'{self.childs[0]}'
+
+        return f'{res}({','.join(f'{c}' for c in self.childs[1:])})'
 
 class Nop(Expr):
     def __init__(self):
@@ -163,3 +179,13 @@ class Var(Expr):
 
     def __str__(self):
         return f'{self.decl.name}'
+    
+
+class Fn(Expr):
+    def __init__(self, name: str):
+        super().__init__(())
+        self.name = name
+        self.precedence = 1
+
+    def __str__(self):
+        return f'{self.name}'

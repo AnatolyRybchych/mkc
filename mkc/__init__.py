@@ -9,7 +9,7 @@ from mkc.func_decl import FuncDecl
 from mkc.array import Array
 from mkc.func import Func
 from mkc.expr import Expr
-from mkc.operations import Assign, BinOp, GetField, Initializer, Literal, Subscript, Var
+from mkc.operations import Assign, BinOp, GetField, Initializer, Literal, Subscript, Var, Fn
 from mkc.operations import Add, Sub, Mul, Div, Mod, Shl, Shr
 from mkc.operations import LessThan, GreaterThen, LessOrEqual, GreaterOrEquals
 from mkc.consturction.ret import Ret
