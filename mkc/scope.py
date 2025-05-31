@@ -50,8 +50,8 @@ class Scope:
             raise Exception(f'struct {name} is already defined in scope of this {self.scope_level}')
 
         new_struct = Struct(name, self)
-        for name, type in fields.items():
-            new_struct.add_field(type, name)
+        for struct_name, type in fields.items():
+            new_struct.add_field(type, struct_name)
 
         if name:
             self.scope_types[name] = new_struct
