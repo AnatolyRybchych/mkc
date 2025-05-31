@@ -11,6 +11,8 @@ class File:
     def __init__(self, path: str, translation_unit):
         from mkc.translation_unit import TranslationUnit
 
+
+        self.include_guard = None
         self.translation_unit:TranslationUnit = translation_unit
         self.path: str = path
         self.typedefs: list[Typedef] = []
@@ -18,6 +20,9 @@ class File:
         self.func_decls: list[FuncDecl] = []
         self.funcs: list[Func] = []
         self.enums: list[Enum] = []
+
+    def set_include_guard(self, include_guard: str|None = None):
+        self.include_guard = include_guard
 
     def struct(self, name: str, **fields: Type) -> Struct:
         new_struct = self.translation_unit.struct(name, **fields)
@@ -64,6 +69,11 @@ class File:
             if '{' in var:
                 res += ['']
 
+        if self.include_guard:
+            cat(f'#ifndef {self.include_guard}')
+            cat(f'#define {self.include_guard}')
+            cat(f'')
+
         for typedef in self.typedefs:
             cat(f'{typedef};')
 
@@ -81,5 +91,9 @@ class File:
 
         for func in self.funcs:
             cat(f'{func}')
+
+        if self.include_guard:
+            cat(f'')
+            cat(f'#endif // {self.include_guard}')
 
         return '\n'.join(res)

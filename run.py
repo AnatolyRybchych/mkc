@@ -24,5 +24,6 @@ point = main.struct('',
     end = c.char.const().ptr()).typedef('Token')
 
 main.declare(point)
+main.include_guard = 'TEST_H'
 
 print(main)
