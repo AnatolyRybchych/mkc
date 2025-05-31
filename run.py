@@ -26,4 +26,6 @@ point = main.struct('',
 main.declare(point)
 main.include_guard = 'TEST_H'
 
-print(main)
+# print(main)
+
+codebase.generate()

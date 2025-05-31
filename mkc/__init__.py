@@ -20,8 +20,8 @@ class Codebase(Scope):
     def __init__(self):
         Scope.__init__(self, Scope.LEVEL_TOP, None)
 
-        self.object_files = []
-        self.include_paths = []
+        self.object_files: list[ObjFile] = []
+        self.include_paths: list[str] = []
 
     def add_new_obj(self) -> ObjFile:
         object_file = ObjFile(self)
@@ -30,3 +30,10 @@ class Codebase(Scope):
 
     def add_new_file(self, filename):
         return self.add_new_obj().add_new_file(filename)
+    
+    def generate(self):
+        for obj in self.object_files:
+            for path, source in obj.link_files.items():
+                with open(path, 'w') as file:
+                    file.write(f'{source}')
+
