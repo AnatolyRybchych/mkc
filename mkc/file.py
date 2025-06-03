@@ -7,6 +7,8 @@ from mkc.type import Type
 from mkc.enum import Enum
 from mkc.scope import Scope
 
+import os 
+
 class File:
     def __init__(self, path: str, translation_unit):
         from mkc.translation_unit import TranslationUnit
@@ -20,6 +22,14 @@ class File:
         self.func_decls: list[FuncDecl] = []
         self.funcs: list[Func] = []
         self.enums: list[Enum] = []
+
+        self.includes: list[File] = []
+
+    def include_file(self, file):
+        assert isinstance(file, File)
+
+        self.translation_unit.scope_link(file.translation_unit)
+        self.includes.append(file)
 
     def set_include_guard(self, include_guard: str|None = None):
         self.include_guard = include_guard
@@ -40,6 +50,12 @@ class File:
         new_func = Func(self.translation_unit, ret, name, *args)
         self.declare(new_func)
         return new_func
+    
+    def find_struct(self, name: str) -> Struct | None:
+        return self.translation_unit.find_struct(name)
+
+    def find_var(self, name: str):
+        return self.translation_unit.find_var(name)
 
     def declare(self, target):
         # TODO: check duplicate declarations
@@ -73,6 +89,9 @@ class File:
             cat(f'#ifndef {self.include_guard}')
             cat(f'#define {self.include_guard}')
             cat(f'')
+
+        for include in self.includes:
+            cat(f'#include <{os.path.basename(include.path)}>')
 
         for typedef in self.typedefs:
             cat(f'{typedef};')

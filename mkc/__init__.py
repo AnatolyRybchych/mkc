@@ -1,6 +1,7 @@
 
 from mkc.translation_unit import TranslationUnit
 from mkc.objfile import ObjFile
+from mkc.file import File
 from mkc.struct import Struct
 from mkc.union import Union
 from mkc.base_type import *
@@ -31,7 +32,14 @@ class Codebase(Scope):
 
     def add_new_file(self, filename):
         return self.add_new_obj().add_new_file(filename)
-    
+
+    def find_file(self, filename: str) -> File | None:
+        for obj in self.object_files:
+            if filename in obj.link_files:
+                return obj.link_files[filename]
+
+        return None
+
     def generate(self):
         for obj in self.object_files:
             for path, source in obj.link_files.items():

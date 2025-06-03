@@ -19,17 +19,27 @@ class Scope:
         self.parent_scope: Scope | None = parent
         self.scope_variables:dict[str, DeclVar] = {}
         self.scope_types:dict[str, Struct] = {}
+        self.scope_shared_with: list[Scope] = []
 
     def get_scope_level(self) -> int:
         return self.SCOPE_LEVEL[self.scope_level]
+
+    def scope_link(self, scope):
+        assert isinstance(scope, Scope)
+        assert scope.scope_level == self.scope_level
+
+        self.scope_shared_with.append(scope)
+        scope.scope_shared_with.append(self)
 
     def __getitem__(self, name: str):
         return self.find_var(name)
 
     def find_var(self, name: str):
-        if name in self.scope_variables:
-            return self.scope_variables[name].var()
-        elif self.parent_scope is not None:
+        for scope_variables in self.all_in_all_scopes(lambda scope: scope.scope_variables):
+            if name in scope_variables:
+                return scope_variables[name]
+
+        if self.parent_scope is not None:
             return self.parent_scope.find_var(name)
         else:
             return None
@@ -58,10 +68,27 @@ class Scope:
 
         return new_struct
 
+    def all_in_all_scopes(self, select_field):
+        yield select_field(self)
+
+        visited = set()
+        unresolved: list[Scope] = [self]
+        while len(unresolved) != 0:
+            scope = unresolved.pop()
+
+            yield select_field(scope)
+
+            for shared in scope.scope_shared_with:
+                if id(shared) not in visited:
+                    visited.add(id(shared))
+                    unresolved.append(shared)
+
     def find_struct(self, name: str):
-        if name in self.scope_types:
-            return self.scope_types[name]
-        elif self.parent_scope is not None:
+        for scope_types in self.all_in_all_scopes(lambda scope: scope.scope_types):
+            if name in scope_types:
+                return scope_types[name]
+
+        if self.parent_scope is not None:
             return self.parent_scope.find_struct(name)
         else:
             return None
