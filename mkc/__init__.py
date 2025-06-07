@@ -18,12 +18,20 @@ from mkc.consturction.ret import Ret
 from mkc.scope import Scope
 from mkc.func_type import FuncType
 
+import os
+
 class Codebase(Scope):
     def __init__(self):
         Scope.__init__(self, Scope.LEVEL_TOP, None)
 
         self.object_files: list[ObjFile] = []
         self.include_paths: list[str] = []
+    
+    def add_include_path(self, path: str):
+        path = os.path.abspath(path)
+
+        if path not in self.include_paths:
+            self.include_paths.append(path)
 
     def add_new_obj(self) -> ObjFile:
         object_file = ObjFile(self)
@@ -43,6 +51,7 @@ class Codebase(Scope):
     def generate(self):
         for obj in self.object_files:
             for path, source in obj.link_files.items():
+                os.makedirs(os.path.dirname(path), exist_ok=True)
                 with open(path, 'w') as file:
                     file.write(f'{source}')
 
