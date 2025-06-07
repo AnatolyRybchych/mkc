@@ -25,8 +25,8 @@ class If(Construction):
             then = Block(self.parent_block)
             then.add_line(self.then)
 
-        result = f'if ({self.condition}) {then}'
+        result = f'if ({self.condition}) {then}\n'
         if self.otherwice:
-            result += f'else {self.otherwice}'
+            result += f'else {self.otherwice}\n'
 
         return result

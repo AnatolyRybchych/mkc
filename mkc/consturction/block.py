@@ -27,6 +27,13 @@ class Block(Construction, Scope):
         self.add_line(if_statement)
         return if_statement
 
+    def add_comment(self, text: str):
+        from mkc.consturction.comment import Comment
+
+        comment = Comment(text)
+        self.add_line(comment)
+        return comment
+
     def add_line(self, line: Expr | Construction) -> Construction:
         if isinstance(line, Expr):
             line = Line(line)
