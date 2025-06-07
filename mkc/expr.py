@@ -18,6 +18,14 @@ class Expr:
             from mkc.operations import Literal
             return Assign(self, Literal(expr))
 
+    def ref(self):
+        from mkc.operations import Ref
+        return Ref(self)
+
+    def deref(self):
+        from mkc.operations import Deref
+        return Deref(self)
+
     def __add__(self, rhs):
         from mkc.operations import Add
         from mkc.operations import Literal

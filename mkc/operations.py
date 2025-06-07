@@ -93,6 +93,30 @@ class Call(Expr):
 
         return f'{res}({','.join(f'{c}' for c in self.childs[1:])})'
 
+class Ref(Expr):
+    def __init__(self, expr: Expr):
+        super().__init__((callable, *expr))
+        self.precedence = 2
+        self.expr = expr
+
+    def __str__(self):
+        if self.expr.precedence > self.precedence:
+            return f'&({self.expr})'
+        else:
+            return f'&{self.expr}'
+
+class Deref(Expr):
+    def __init__(self, expr: Expr):
+        super().__init__((expr))
+        self.precedence = 2
+        self.expr = expr
+
+    def __str__(self):
+        if self.expr.precedence > self.precedence:
+            return f'*({self.expr})'
+        else:
+            return f'*{self.expr}'
+
 class Nop(Expr):
     def __init__(self):
         super().__init__(())
@@ -110,15 +134,15 @@ class Subscript(Expr):
         return f'({self.childs[0]})[{self.field}]'
 
 class Literal(Expr):
-    def __init__(self, value: tuple[int]):
+    def __init__(self, value: int | str, flavour = 'default'):
         super().__init__(())
-        assert type(value) in [int]
         self.value = value
         self.precedence = 1
+        self.flavour = flavour
 
     def is_literal(target):
-        if type(target) is int:
-            True
+        if type(target) in [int, str]:
+            return True
 
         return False
 
@@ -130,7 +154,43 @@ class Literal(Expr):
         else:
             raise Exception(f'The {type(target)} is neither a literal or expresson')
 
+    def escape_string(text: str) -> str:
+        ESC = {
+            '\\': '\\\\',
+            '\n': '\\n',
+            '\t': '\\t',
+            '\'': '\\\'',
+            '\"': '\\\"',
+        }
+
+        res = ''
+        for ch in text:
+            if ch in ESC:
+                res += ESC[ch]
+            elif ch.isprintable():
+                res += ch
+            else:
+                b = bytes(ch, 'utf-8')
+                assert len(b) == 1
+                res += f'\\x{hex(b[0])[2:]}'
+        
+        return res
+
     def __str__(self):
+        if self.flavour == 'char':
+            if type(self.value) is int:
+                if self.value < 128:
+                    value = f'{Literal.escape_string(str(bytes([self.value]), encoding='ascii'))}'
+                else:
+                    value = f'\\x{hex(self.value)[2:]}'
+            else:
+                value = self.value
+
+            return f"'{value}'"
+
+        if type(self.value) is str:
+            return f'"{self.escape_string(self.value)}"'
+
         return f'{self.value}'
 
 class Initializer(Expr):
@@ -189,7 +249,6 @@ class Var(Expr):
 
     def __str__(self):
         return f'{self.decl.name}'
-    
 
 class Fn(Expr):
     def __init__(self, name: str):
@@ -199,3 +258,4 @@ class Fn(Expr):
 
     def __str__(self):
         return f'{self.name}'
+

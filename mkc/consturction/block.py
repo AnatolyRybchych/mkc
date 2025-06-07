@@ -27,6 +27,12 @@ class Block(Construction, Scope):
         self.add_line(if_statement)
         return if_statement
 
+    def add_switch(self, target: Expr, cases: list[tuple[Expr, Construction | Expr]] = []):
+        from mkc.consturction.switch import Switch
+        switch =  Switch(self, target, cases)
+        self.add_line(switch)
+        return switch
+
     def add_comment(self, text: str):
         from mkc.consturction.comment import Comment
 

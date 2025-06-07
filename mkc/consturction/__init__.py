@@ -12,7 +12,7 @@ def as_construction(param):
     from mkc.consturction import Construction
     from mkc.consturction.line import Line
 
-    if param == None:
+    if param is None:
         param = Nop()
 
     if isinstance(param, Construction):
