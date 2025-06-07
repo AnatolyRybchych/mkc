@@ -15,6 +15,7 @@ from mkc.operations import Assign, BinOp, GetField, Initializer, Literal, Subscr
 from mkc.operations import Add, Sub, Mul, Div, Mod, Shl, Shr
 from mkc.operations import LessThan, GreaterThen, LessOrEqual, GreaterOrEquals
 from mkc.consturction.ret import Ret
+from mkc.consturction.if_statement import If
 from mkc.scope import Scope
 from mkc.func_type import FuncType
 

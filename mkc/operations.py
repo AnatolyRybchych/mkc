@@ -36,6 +36,10 @@ class GreaterOrEquals(BinOp):
     def __init__(self, lhs, rhs):
         super().__init__(lhs, rhs, '>=', 6)
 
+class Equals(BinOp):
+    def __init__(self, lhs, rhs):
+        super().__init__(lhs, rhs, '==', 6)
+
 class Shl(BinOp):
     def __init__(self, lhs, rhs):
         super().__init__(lhs, rhs, '<<', 5)
@@ -92,6 +96,9 @@ class Call(Expr):
 class Nop(Expr):
     def __init__(self):
         super().__init__(())
+    
+    def __str__(self):
+        return ''
 
 class Subscript(Expr):
     def __init__(self, expr: Expr, field: Expr):
@@ -115,7 +122,7 @@ class Literal(Expr):
 
         return False
 
-    def expr_or_loteral(target) -> Expr:
+    def expr_or_literal(target) -> Expr:
         if Literal.is_literal(target):
             return Literal(target)
         elif isinstance(target, Expr):
@@ -174,6 +181,9 @@ class Var(Expr):
     def __init__(self, decl):
         from mkc.consturction.decl_var import DeclVar
         super().__init__(())
+
+        assert isinstance(decl, DeclVar)
+
         self.decl: DeclVar = decl
         self.precedence = 1
 

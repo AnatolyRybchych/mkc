@@ -12,6 +12,9 @@ class Typedef(Type, Depends):
         if not type.first_definition:
             type.first_definition = self
 
+    def __getitem__(self, key):
+        return self.type[key]
+
     def type_name(self):
         return f'{self.name}'
 

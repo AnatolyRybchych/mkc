@@ -15,6 +15,14 @@ class Enum(Type):
             else:
                 self.add_field(field[0], field[1])
 
+    def __getitem__(self, key: str):
+        from mkc.consturction.decl_var import DeclVar
+        import mkc as c
+
+        assert key in (name for name, value in self.fields)
+
+        return c.Var(DeclVar(c.int, key))
+
     def full_field_declaration(self, name):
         return f'{self} {name}'
 

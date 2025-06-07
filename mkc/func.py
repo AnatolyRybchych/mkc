@@ -10,7 +10,7 @@ class Func:
         from mkc.file import File
 
         self.func_type = FuncType(ret, *args)
-        self.body = Block()
+        self.body = Block(file)
         self.name: str = name
         self.file: File = file
 

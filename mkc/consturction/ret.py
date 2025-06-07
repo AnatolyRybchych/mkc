@@ -9,4 +9,4 @@ class Ret(Construction):
         self.expr = expr
 
     def __str__(self) -> str:
-        return f'return {self.expr}'
+        return f'return {self.expr};'

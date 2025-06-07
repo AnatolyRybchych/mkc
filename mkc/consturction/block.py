@@ -13,6 +13,20 @@ class Block(Construction, Scope):
 
         self.lines: list[Construction] = []
 
+    def add_block(self):
+        from mkc.consturction.block import Block
+
+        block = Block(self)
+        self.add_line(block)
+        return block
+
+    def add_if(self, condition: Expr, then = None, otherwice = None):
+        from mkc.consturction.if_statement import If
+
+        if_statement = If(self, condition, then, otherwice)
+        self.add_line(if_statement)
+        return if_statement
+
     def add_line(self, line: Expr | Construction) -> Construction:
         if isinstance(line, Expr):
             line = Line(line)
