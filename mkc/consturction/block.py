@@ -26,6 +26,13 @@ class Block(Construction, Scope):
         if_statement = If(self, condition, then, otherwice)
         self.add_line(if_statement)
         return if_statement
+    
+    def add_for(self, init: Construction | Expr | None, condition: Expr, increment: Expr):
+        from mkc.consturction.for_loop import For
+
+        for_loop = For(self, init, condition, increment)
+        self.add_line(for_loop)
+        return for_loop
 
     def add_switch(self, target: Expr, cases: list[tuple[Expr, Construction | Expr]] = []):
         from mkc.consturction.switch import Switch

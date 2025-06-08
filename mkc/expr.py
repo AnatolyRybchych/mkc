@@ -68,6 +68,10 @@ class Expr:
         from mkc.operations import Literal, Equals
         return Equals(self, Literal.expr_or_literal(rhs))
 
+    def __ne__(self, rhs):
+        from mkc.operations import Literal, NotEquals
+        return NotEquals(self, Literal.expr_or_literal(rhs))
+
     def __getitem__(self, key):
         from mkc.operations import Subscript
         from mkc.operations import GetField

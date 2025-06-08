@@ -40,6 +40,10 @@ class Equals(BinOp):
     def __init__(self, lhs, rhs):
         super().__init__(lhs, rhs, '==', 6)
 
+class NotEquals(BinOp):
+    def __init__(self, lhs, rhs):
+        super().__init__(lhs, rhs, '!=', 6)
+
 class Shl(BinOp):
     def __init__(self, lhs, rhs):
         super().__init__(lhs, rhs, '<<', 5)
