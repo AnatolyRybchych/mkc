@@ -12,7 +12,7 @@ import json
 # print('test', '=', c.Fn('add') (one + two, three + four), ';')
 
 codebase = c.Codebase()
-main = codebase.add_new_file('main.c')
+main = codebase.add_new_file('output/main.c')
 
 TokenType = main.enum('TokenType', 'END_OF_FILE', 'NAME', 'SPACE',
     'OPEN_PARENTHESIS', 'CLOSE_PARENTHESIS', 'OPEN_CURLY', 'CLOSE_CURLY',
