@@ -59,7 +59,7 @@ class Scope:
         from mkc.struct import Struct
 
         if name and name in self.scope_types:
-            raise Exception(f'struct {name} is already defined in scope of this {self.scope_level}')
+            raise Exception(f'type {name} is already defined in scope of this {self.scope_level}')
 
         new_struct = Struct(name, self)
         for struct_name, type in fields.items():
@@ -69,6 +69,18 @@ class Scope:
             self.scope_types[name] = new_struct
 
         return new_struct
+
+    def enum(self, name: str, *fields: tuple[str, int] | str):
+        from mkc.enum import Enum
+
+        if name and name in self.scope_types:
+            raise Exception(f'type {name} is already defined in scope of this {self.scope_level}')
+
+        enum =  Enum('', self, *fields).typedef(name)
+        self.scope_types[name] = enum
+
+        return enum
+
 
     def all_in_all_scopes(self, select_field):
         yield select_field(self)
@@ -85,12 +97,12 @@ class Scope:
                     visited.add(id(shared))
                     unresolved.append(shared)
 
-    def find_struct(self, name: str):
+    def find_type(self, name: str):
         for scope_types in self.all_in_all_scopes(lambda scope: scope.scope_types):
             if name in scope_types:
                 return scope_types[name]
 
         if self.parent_scope is not None:
-            return self.parent_scope.find_struct(name)
+            return self.parent_scope.find_type(name)
         else:
             return None

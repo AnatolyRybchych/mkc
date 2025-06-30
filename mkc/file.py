@@ -40,9 +40,9 @@ class File:
             self.declare(new_struct)
 
         return new_struct
-    
+
     def enum(self, name: str, *fields: tuple[str, int] | str) -> Typedef:
-        new_enum = Enum('', self.translation_unit, *fields).typedef(name)
+        new_enum = Scope.enum(self.translation_unit, name, *fields)
         self.declare(new_enum)
         return new_enum
 
@@ -51,8 +51,8 @@ class File:
         self.declare(new_func)
         return new_func
     
-    def find_struct(self, name: str) -> Struct | None:
-        return self.translation_unit.find_struct(name)
+    def find_type(self, name: str) -> Struct | None:
+        return self.translation_unit.find_type(name)
 
     def find_var(self, name: str):
         return self.translation_unit.find_var(name)

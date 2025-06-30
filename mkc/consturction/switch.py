@@ -22,6 +22,7 @@ class Switch(Construction):
     def __str__(self) -> str:
         from mkc.consturction.block import Block
         from mkc.consturction.line import Line
+        from mkc.consturction.ret import Ret
 
         if len(self.cases) == 0:
             return ''
@@ -30,7 +31,12 @@ class Switch(Construction):
 
         for condition, then in self.cases:
             result += f'case {condition}: {then}'
-            result += f'break;'
+            if type(then) is Ret:
+                pass
+            elif type(then) is Block and len(then.lines) != 0 and type(then.lines[-1]) is Ret:
+                pass
+            else:
+                result += f'break;'
 
         result += '}\n'
         return result
