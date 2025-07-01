@@ -193,7 +193,7 @@ class Literal(Expr):
             return f"'{value}'"
 
         if type(self.value) is str:
-            return f'"{self.escape_string(self.value)}"'
+            return f'"{Literal.escape_string(self.value)}"'
 
         return f'{self.value}'
 
