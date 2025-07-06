@@ -50,7 +50,7 @@ class File:
         new_func = Func(self.translation_unit, ret, name, *args)
         self.declare(new_func)
         return new_func
-    
+
     def find_type(self, name: str) -> Struct | None:
         return self.translation_unit.find_type(name)
 

@@ -17,6 +17,10 @@ class Func:
         for arg_type, arg_name in args:
             self.body.scope_set_var(DeclVar(arg_type, arg_name))
 
+    def __call__(self, *args):
+        from mkc.operations import Call, Fn
+        return Fn(self.name)(*args)
+
     def func_decl(self) -> FuncDecl:
         return FuncDecl(self.func_type, self.name)
 

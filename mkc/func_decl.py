@@ -7,6 +7,10 @@ class FuncDecl:
         self.func_type = type
         self.name: str = name
 
+    def __call__(self, *args):
+        from mkc.operations import Call, Fn
+        return Fn(self.name)(*args)
+
     def __str__(self):
         return self.func_type.feild_declaration(self.name)
 
