@@ -47,7 +47,7 @@ class File:
         return new_enum
 
     def func(self, ret: Type, name: str, *args: tuple[Type, str]) -> Func:
-        new_func = Func(self.translation_unit, ret, name, *args)
+        new_func = self.translation_unit.func(ret, name, *args)
         self.declare(new_func)
         return new_func
 

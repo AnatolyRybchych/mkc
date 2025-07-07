@@ -40,6 +40,14 @@ class Equals(BinOp):
     def __init__(self, lhs, rhs):
         super().__init__(lhs, rhs, '==', 6)
 
+class And(BinOp):
+    def __init__(self, lhs, rhs):
+        super().__init__(lhs, rhs, '&&', 11)
+
+class Or(BinOp):
+    def __init__(self, lhs, rhs):
+        super().__init__(lhs, rhs, '||', 12)
+
 class NotEquals(BinOp):
     def __init__(self, lhs, rhs):
         super().__init__(lhs, rhs, '!=', 6)

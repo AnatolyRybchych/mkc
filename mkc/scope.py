@@ -55,6 +55,17 @@ class Scope:
 
         self.scope_variables[decl.name] = decl
 
+    def func(self, ret, name: str, *args):
+        from mkc.func import Func
+        from mkc.consturction.decl_var import DeclVar
+
+        if name in self.scope_variables:
+            raise Exception(f'The variable {name} is aready in the {self.scope_level} scope')
+
+        new_func = Func(self, ret, name, *args)
+        self.scope_variables[name] = new_func.decl_var
+        return new_func
+
     def struct(self, name: str, **fields):
         from mkc.struct import Struct
 
@@ -80,7 +91,6 @@ class Scope:
         self.scope_types[name] = enum
 
         return enum
-
 
     def all_in_all_scopes(self, select_field):
         yield select_field(self)

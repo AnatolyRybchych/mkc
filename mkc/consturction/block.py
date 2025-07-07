@@ -26,11 +26,18 @@ class Block(Construction, Scope):
         if_statement = If(self, condition, then, otherwice)
         self.add_line(if_statement)
         return if_statement
-    
+
     def add_for(self, init: Construction | Expr | None, condition: Expr, increment: Expr):
         from mkc.consturction.for_loop import For
 
-        for_loop = For(self, init, condition, increment)
+        while_loop = For(self, init, condition, increment)
+        self.add_line(while_loop)
+        return while_loop
+
+    def add_while(self, condition: Expr):
+        from mkc.consturction.while_loop import While
+
+        for_loop = While(self, condition)
         self.add_line(for_loop)
         return for_loop
 
