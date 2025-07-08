@@ -1,5 +1,6 @@
 
 from mkc.consturction import Construction, as_construction
+from mkc.consturction.block import Block
 from mkc.expr import Expr
 from mkc.operations import Nop
 
@@ -9,12 +10,14 @@ class If(Construction):
 
         self.parent_block = parent_block
         self.condition: Expr = condition
-        self.then: Construction = as_construction(then)
+        self.then: Block = Block(parent_block)
+        self.then.add_line(as_construction(then))
 
-        self.otherwice: Construction | None = None
+        self.otherwice: Block | None = None
 
         if otherwice is not None:
-            self.otherwice = as_construction(otherwice)
+            self.otherwice = Block(parent_block)
+            self.otherwice.add_line(as_construction(otherwice))
 
     def __str__(self) -> str:
         from mkc.consturction.block import Block
