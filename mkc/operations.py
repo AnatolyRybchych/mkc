@@ -3,7 +3,7 @@ from mkc.type import Type
 
 class UnOp(Expr):
     def __init__(self, expr: Expr, operation_fmt: str, precedence: int):
-        super().__init__(tuple(([expr])))
+        super().__init__([expr])
         self.precedence = precedence
         self.operation_fmt = operation_fmt
 
@@ -13,7 +13,7 @@ class UnOp(Expr):
 
 class BinOp(Expr):
     def __init__(self, lhs: Expr, rhs:Expr, operation_sign: str, precedence: int):
-        super().__init__((lhs, rhs))
+        super().__init__([lhs, rhs])
         self.precedence = precedence
         self.operation_sign = operation_sign
 
@@ -97,7 +97,7 @@ class Mod(BinOp):
 
 class GetField(Expr):
     def __init__(self, lhs: Expr, field: str):
-        super().__init__((lhs))
+        super().__init__([lhs])
         self.field = field
         self.precedence = 1
 
@@ -109,7 +109,7 @@ class GetField(Expr):
 
 class Call(Expr):
     def __init__(self, callable: Expr, *args: Expr):
-        super().__init__((callable, *args))
+        super().__init__([callable, *args])
         self.precedence = 1
 
     def __str__(self):
@@ -122,7 +122,7 @@ class Call(Expr):
 
 class Ref(Expr):
     def __init__(self, expr: Expr):
-        super().__init__((callable, *expr))
+        super().__init__([expr])
         self.precedence = 2
         self.expr = expr
 
@@ -134,7 +134,7 @@ class Ref(Expr):
 
 class Deref(Expr):
     def __init__(self, expr: Expr):
-        super().__init__((expr))
+        super().__init__([expr])
         self.precedence = 2
         self.expr = expr
 
@@ -146,14 +146,14 @@ class Deref(Expr):
 
 class Nop(Expr):
     def __init__(self):
-        super().__init__(())
+        super().__init__([])
     
     def __str__(self):
         return ''
 
 class Subscript(Expr):
     def __init__(self, expr: Expr, field: Expr):
-        super().__init__(tuple([expr]))
+        super().__init__([expr])
         self.field = field
         self.precedence = 1
 
@@ -162,7 +162,7 @@ class Subscript(Expr):
 
 class Literal(Expr):
     def __init__(self, value: int | str, flavour = 'default'):
-        super().__init__(())
+        super().__init__([])
         self.value = value
         self.precedence = 1
         self.flavour = flavour
@@ -222,13 +222,13 @@ class Literal(Expr):
 
 class Initializer(Expr):
     def __init__(self, init_type: Type, initializer = None):
-        def initializer_expressions(initializer) -> tuple:
+        def initializer_expressions(initializer) -> list:
             if isinstance(initializer, Expr):
                 return (initializer)
             elif type(initializer) is list:
-                return tuple([i if isinstance(i, Expr) else Initializer(i) for i in initializer])
+                return [i if isinstance(i, Expr) else Initializer(i) for i in initializer]
             elif type(initializer) is dict:
-                return tuple([i if isinstance(i, Expr) else Initializer(i) for i in initializer.values()])
+                return [i if isinstance(i, Expr) else Initializer(i) for i in initializer.values()]
             else:
                 raise Exception(f'Unexpected initializer type {type(initializer)}')
 
@@ -267,7 +267,7 @@ class Initializer(Expr):
 class Var(Expr):
     def __init__(self, decl):
         from mkc.consturction.decl_var import DeclVar
-        super().__init__(())
+        super().__init__([])
 
         assert isinstance(decl, DeclVar)
 
@@ -279,7 +279,7 @@ class Var(Expr):
 
 class Fn(Expr):
     def __init__(self, name: str):
-        super().__init__(())
+        super().__init__([])
         self.name = name
         self.precedence = 1
 

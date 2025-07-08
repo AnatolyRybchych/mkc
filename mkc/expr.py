@@ -2,7 +2,7 @@
 import math
 
 class Expr:
-    def __init__(self, childs: tuple):
+    def __init__(self, childs: list):
         self.precedence = math.inf
         self.childs = childs
 
