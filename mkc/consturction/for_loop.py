@@ -15,4 +15,8 @@ class For(Construction):
         self.body: Block = Block(parent_block)
 
     def __str__(self) -> str:
-        return f'for ({self.init} {self.condition};{self.increment}){self.body}'
+        consruction = f'for ({self.init} {self.condition};{self.increment})'
+        if self.body.is_empty():
+            return f'{consruction};'
+        else:
+            return f'{consruction}{self.body}'

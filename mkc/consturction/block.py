@@ -12,11 +12,23 @@ class Block(Construction, Scope):
         Scope.__init__(self, Scope.LEVEL_BLOCK, parent)
 
         self.lines: list[Construction] = []
+        self.logical = False
+
+    def is_empty(self) -> bool:
+        return all(type(line) is Block and line.is_empty() for line in self.lines)
 
     def add_block(self):
         from mkc.consturction.block import Block
 
         block = Block(self)
+        self.add_line(block)
+        return block
+    
+    def add_logical_block(self):
+        from mkc.consturction.block import Block
+
+        block = Block(self)
+        block.logical = True
         self.add_line(block)
         return block
 
@@ -74,4 +86,8 @@ class Block(Construction, Scope):
         return var
 
     def __str__(self) -> str:
-        return '{' + ''.join(f'{line}' for line in self.lines) + '}'
+        lines = ''.join(f'{line}' for line in self.lines)
+        if not self.logical:
+            return '{' + lines + '}'
+        else:
+            return lines

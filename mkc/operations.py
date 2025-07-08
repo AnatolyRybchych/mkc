@@ -1,14 +1,21 @@
 from mkc.expr import Expr
 from mkc.type import Type
 
+class UnOp(Expr):
+    def __init__(self, expr: Expr, operation_fmt: str, precedence: int):
+        super().__init__(tuple(([expr])))
+        self.precedence = precedence
+        self.operation_fmt = operation_fmt
+
+    def __str__(self):
+        res = f'({self.childs[0]})' if self.childs[0].precedence > self.precedence else f'{self.childs[0]}'
+        return self.operation_fmt.format(res)
+
 class BinOp(Expr):
     def __init__(self, lhs: Expr, rhs:Expr, operation_sign: str, precedence: int):
         super().__init__((lhs, rhs))
         self.precedence = precedence
         self.operation_sign = operation_sign
-
-    def get_childs(self):
-        return [self.childs[0], self.childs[1]]
 
     def __str__(self):
         res = f'({self.childs[0]})' if self.childs[0].precedence > self.precedence else f'{self.childs[0]}'
@@ -43,6 +50,14 @@ class Equals(BinOp):
 class And(BinOp):
     def __init__(self, lhs, rhs):
         super().__init__(lhs, rhs, '&&', 11)
+
+class Not(UnOp):
+    def __init__(self, expr):
+        super().__init__(expr, '!{}', 2)
+
+class SizeOf(UnOp):
+    def __init__(self, expr):
+        super().__init__(expr, 'sizeof {}', 2)
 
 class Or(BinOp):
     def __init__(self, lhs, rhs):
@@ -138,7 +153,7 @@ class Nop(Expr):
 
 class Subscript(Expr):
     def __init__(self, expr: Expr, field: Expr):
-        super().__init__((expr))
+        super().__init__(tuple([expr]))
         self.field = field
         self.precedence = 1
 
