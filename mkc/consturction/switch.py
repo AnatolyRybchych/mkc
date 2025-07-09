@@ -4,7 +4,7 @@ from mkc.expr import Expr
 from mkc.operations import Nop
 
 class Switch(Construction):
-    def __init__(self, parent_block, target: Expr, cases: list[tuple[Expr, Construction | Expr]] = []):
+    def __init__(self, parent_block, target: Expr, cases: list[tuple[Expr, Construction | Expr]] = [], default: Construction | Expr | None = None):
         from mkc.operations import Literal
         super().__init__()
 
@@ -14,10 +14,15 @@ class Switch(Construction):
             (Literal.expr_or_literal(expr), as_construction(construction))
             for expr, construction in cases]
 
+        self.default: Construction = default and as_construction(default)
+
     def add_case(self, condition: Expr, construction: Construction | Expr):
         from mkc.operations import Literal
 
         self.cases.append((Literal.expr_or_literal(condition), as_construction(construction)))
+
+    def set_default(self, default: Construction | Expr | None = None):
+        self.default: Construction = default and as_construction(default)
 
     def __str__(self) -> str:
         from mkc.consturction.block import Block
@@ -37,6 +42,9 @@ class Switch(Construction):
                 pass
             else:
                 result += f'break;'
+        if self.default:
+            result += f'default:\n{self.default}'
 
         result += '}\n'
+
         return result

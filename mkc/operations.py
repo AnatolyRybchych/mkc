@@ -242,8 +242,8 @@ class Initializer(Expr):
         if not self.initializer:
             return f'({self.type.type_name()})' '{0}'
 
-        if self.type.get_struct():
-            t = self.type.get_struct()
+        if self.type.get_origin():
+            t = self.type.get_origin()
             fields = t.get_fields()
             assert type(self.initializer) is dict
 

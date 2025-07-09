@@ -29,16 +29,26 @@ class Type:
         else:
             return Const(self)
 
-    def get_struct(self):
+    def get_origin(self, discard = ['typedef', 'ptr', 'array', 'const']):
         from mkc.struct import Struct
+        from mkc.const import Const
+        from mkc.ptr import Ptr
+        from mkc.array import Array
         from mkc.typedef import Typedef
 
-        if isinstance(self, Struct):
-            return self
-        elif isinstance(self, Typedef):
-            return self.type.get_struct()
+        if 'typedef' in discard and isinstance(self, Typedef):
+            return self.type.get_origin(discard)
 
-        return None
+        if 'ptr' in discard and isinstance(self, Ptr):
+            return self.type.get_origin(discard)
+
+        if 'array' in discard and isinstance(self, Array):
+            return self.type.get_origin(discard)
+
+        if 'const' in discard and isinstance(self, Const):
+            return self.type.get_origin(discard)
+
+        return self
 
 def field_decl(target: tuple[Type, str] | Type) -> str:
     if type(target) is Type:
