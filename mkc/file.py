@@ -1,6 +1,6 @@
 
 from mkc.type import Struct, Typedef, Enum
-from mkc.consturction.func_decl import FuncDecl
+from mkc.construction import FuncDecl
 from mkc.func import Func
 from mkc.type import Type
 from mkc.scope import Scope
@@ -50,7 +50,7 @@ class File:
         return new_func
 
     def enum_str_func(self, name: str, enum_type: Type, argname: str | None = None) -> Func:
-        from mkc.consturction.ret import Ret
+        from mkc.construction import Ret
         from mkc.operations import Literal
         from mkc.base_types import char
 

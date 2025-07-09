@@ -266,7 +266,7 @@ class Initializer(Expr):
 
 class Var(Expr):
     def __init__(self, decl):
-        from mkc.consturction.decl_var import DeclVar
+        from mkc.construction import DeclVar
         super().__init__([])
 
         assert isinstance(decl, DeclVar)

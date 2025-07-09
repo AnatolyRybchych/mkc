@@ -284,7 +284,7 @@ class Enum(Type):
         return map(lambda k: f'{self.prefix}{k}', self.keys())
 
     def __getitem__(self, key: str):
-        from mkc.consturction.decl_var import DeclVar
+        from mkc.construction import DeclVar
         import mkc as c
 
         assert key in self.keys() or f'{self.prefix}{key}' in self.keys()

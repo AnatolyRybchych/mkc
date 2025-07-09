@@ -12,7 +12,7 @@ class Scope:
     }
 
     def __init__(self, scope_level: str, parent = None):
-        from mkc.consturction.decl_var import DeclVar
+        from mkc.construction import DeclVar
         from mkc.type import Struct
 
         self.scope_level: str = scope_level
@@ -47,7 +47,7 @@ class Scope:
             return None
 
     def scope_set_var(self, decl):
-        from mkc.consturction.decl_var import DeclVar
+        from mkc.construction import DeclVar
 
         assert isinstance(decl, DeclVar)
         if decl.name in self.scope_variables:
@@ -57,7 +57,7 @@ class Scope:
 
     def func(self, ret, name: str, *args):
         from mkc.func import Func
-        from mkc.consturction.decl_var import DeclVar
+        from mkc.construction import DeclVar
 
         if name in self.scope_variables:
             raise Exception(f'The variable {name} is aready in the {self.scope_level} scope')

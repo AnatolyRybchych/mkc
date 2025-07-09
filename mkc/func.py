@@ -1,7 +1,5 @@
-from mkc.consturction.func_decl import FuncDecl
 from mkc.type import Type, FuncType
-from mkc.consturction.block import Block
-from mkc.consturction.decl_var import DeclVar
+from mkc.construction import Block, DeclVar, FuncDecl
 from mkc.operations import Var
 
 class Func:
