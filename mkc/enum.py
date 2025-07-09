@@ -20,7 +20,10 @@ class Enum(Type):
         self.prefix = prefix
 
     def keys(self) -> list[str]:
-        return [name for name, value in self.fields]
+        return [name for name, _ in self.fields]
+
+    def prefixed_keys(self) -> list[str]:
+        return map(lambda k: f'{self.prefix}{k}', self.keys())
 
     def __getitem__(self, key: str):
         from mkc.consturction.decl_var import DeclVar

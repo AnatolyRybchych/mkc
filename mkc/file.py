@@ -51,6 +51,25 @@ class File:
         self.declare(new_func)
         return new_func
 
+    def enum_str_func(self, name: str, enum_type: Type, argname: str | None = None) -> Func:
+        from mkc.consturction.ret import Ret
+        from mkc.operations import Literal
+        from mkc.base_type import char
+
+        assert isinstance(enum_type, Typedef)
+        enum = enum_type.get_origin(['typedef'])
+        assert isinstance(enum, Enum)
+
+        argname = argname or f'enum_val'
+        enum_str_func = self.func(char.const().ptr(), name, (enum_type, argname))
+
+        switch = enum_str_func.body.add_switch(enum_str_func.body[argname])
+        for k in enum.keys():
+            switch.add_case(enum[k], Ret(Literal(k)))
+        switch.set_default(Ret(Literal(0)))
+
+        return enum_str_func
+
     def find_type(self, name: str) -> Struct | None:
         return self.translation_unit.find_type(name)
 
