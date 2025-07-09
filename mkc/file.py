@@ -1,8 +1,8 @@
 
 from mkc.type import Struct, Typedef, Enum
-from mkc.construction import FuncDecl
+from mkc.construction import DeclVar
 from mkc.func import Func
-from mkc.type import Type
+from mkc.type import Type, FuncType
 from mkc.scope import Scope
 
 import os 
@@ -11,13 +11,13 @@ class File:
     def __init__(self, path: str, translation_unit):
         from mkc.translation_unit import TranslationUnit
 
-
         self.include_guard = None
         self.translation_unit:TranslationUnit = translation_unit
         self.path: str = path
         self.typedefs: list[Typedef] = []
         self.structs: list[Struct] = []
-        self.func_decls: list[FuncDecl] = []
+        self.func_decls: list[DeclVar] = []
+        self.var_decls: list[DeclVar] = []
         self.funcs: list[Func] = []
         self.enums: list[Enum] = []
 
@@ -81,8 +81,11 @@ class File:
             self.structs.append(target)
         elif type(target) is Typedef:
             self.typedefs.append(target)
-        elif type(target) is FuncDecl:
-            self.func_decls.append(target)
+        elif type(target) is DeclVar:
+            if type(target.type) is FuncType:
+                self.func_decls.append(target)
+            else:
+                self.var_decls.append(target)
         elif type(target) is Func:
             self.funcs.append(target)
         elif type(target) is Enum:

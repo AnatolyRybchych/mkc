@@ -4,7 +4,7 @@ from mkc.objfile import ObjFile
 from mkc.file import File
 from mkc.type import *
 from mkc.base_types import *
-from mkc.construction import FuncDecl, Ret, If, For, DeclVar
+from mkc.construction import Ret, If, For, DeclVar
 from mkc.func import Func
 from mkc.expr import Expr
 from mkc.operations import Assign, BinOp, GetField, Initializer, Literal, Subscript, Var, Fn

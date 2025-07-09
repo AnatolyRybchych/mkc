@@ -1,5 +1,5 @@
 from mkc.type import Type, FuncType
-from mkc.construction import Block, DeclVar, FuncDecl
+from mkc.construction import Block, DeclVar
 from mkc.operations import Var
 
 class Func:
@@ -19,8 +19,8 @@ class Func:
         from mkc.operations import Call, Fn
         return Fn(self.name)(*args)
 
-    def func_decl(self) -> FuncDecl:
-        return FuncDecl(self.func_type, self.name)
+    def func_decl(self) -> DeclVar:
+        return self.decl_var
 
     def __str__(self):
         return f'{self.func_type.feild_declaration(self.name)} {self.body}'

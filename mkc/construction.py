@@ -143,14 +143,6 @@ class For(Construction):
         else:
             return f'{consruction}{self.body}'
 
-class FuncDecl(DeclVar):
-    def __init__(self, type, name):
-        super().__init__(type, name, Nop())
-
-    def __call__(self, *args):
-        from mkc.operations import Call, Fn
-        return Fn(self.name)(*args)
-
 class For(Construction):
     def __init__(self, parent_block: Block, init: Construction | Expr | None, condition: Expr, increment: Expr):
         super().__init__()
@@ -167,14 +159,6 @@ class For(Construction):
             return f'{consruction};'
         else:
             return f'{consruction}{self.body}'
-
-class FuncDecl(DeclVar):
-    def __init__(self, type, name):
-        super().__init__(type, name, Nop())
-
-    def __call__(self, *args):
-        from mkc.operations import Call, Fn
-        return Fn(self.name)(*args)
 
 class If(Construction):
     def __init__(self, parent_block, condition: Expr, then: Construction| Expr | None = None, otherwice: Construction | Expr | None = None):
