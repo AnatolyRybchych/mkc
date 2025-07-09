@@ -1,10 +1,8 @@
 
-from mkc.struct import Struct
-from mkc.typedef import Typedef
-from mkc.func_decl import FuncDecl
+from mkc.type import Struct, Typedef, Enum
+from mkc.consturction.func_decl import FuncDecl
 from mkc.func import Func
 from mkc.type import Type
-from mkc.enum import Enum
 from mkc.scope import Scope
 
 import os 
@@ -54,7 +52,7 @@ class File:
     def enum_str_func(self, name: str, enum_type: Type, argname: str | None = None) -> Func:
         from mkc.consturction.ret import Ret
         from mkc.operations import Literal
-        from mkc.base_type import char
+        from mkc.base_types import char
 
         assert isinstance(enum_type, Typedef)
         enum = enum_type.get_origin(['typedef'])
@@ -122,7 +120,7 @@ class File:
             cat(f'{struct};')
 
         for func_decl in self.func_decls:
-            cat(f'{func_decl};')
+            cat(f'{func_decl}')
 
         if self.func_decls and self.funcs:
             cat('')

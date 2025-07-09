@@ -2,13 +2,9 @@
 from mkc.translation_unit import TranslationUnit
 from mkc.objfile import ObjFile
 from mkc.file import File
-from mkc.struct import Struct
-from mkc.union import Union
-from mkc.base_type import *
-from mkc.typedef import Typedef
-from mkc.ptr import Ptr
-from mkc.func_decl import FuncDecl
-from mkc.array import Array
+from mkc.type import *
+from mkc.base_types import *
+from mkc.consturction.func_decl import FuncDecl
 from mkc.func import Func
 from mkc.expr import Expr
 from mkc.operations import Assign, BinOp, GetField, Initializer, Literal, Subscript, Var, Fn
@@ -18,8 +14,8 @@ from mkc.consturction.ret import Ret
 from mkc.consturction.if_statement import If
 from mkc.consturction.for_loop import For
 from mkc.scope import Scope
-from mkc.func_type import FuncType
 from mkc.consturction.decl_var import DeclVar
+
 
 import os
 

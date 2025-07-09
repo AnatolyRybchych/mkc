@@ -1,16 +1,4 @@
-
-from mkc.type import Type
-
-class BaseType(Type):
-    def __init__(self, name):
-        super().__init__()
-        self.name = name
-
-    def type_name(self) -> str:
-        return self.name
-    
-    def feild_declaration(self, name):
-        return f'{self.name} {name}'
+from mkc.type import BaseType
 
 float = BaseType('float')
 double = BaseType('double')

@@ -13,7 +13,7 @@ class Scope:
 
     def __init__(self, scope_level: str, parent = None):
         from mkc.consturction.decl_var import DeclVar
-        from mkc.struct import Struct
+        from mkc.type import Struct
 
         self.scope_level: str = scope_level
         self.parent_scope: Scope | None = parent
@@ -67,7 +67,7 @@ class Scope:
         return new_func
 
     def struct(self, name: str, **fields):
-        from mkc.struct import Struct
+        from mkc.type import Struct
 
         if name and name in self.scope_types:
             raise Exception(f'type {name} is already defined in scope of this {self.scope_level}')
@@ -82,7 +82,7 @@ class Scope:
         return new_struct
 
     def enum(self, name: str, *fields: tuple[str, int] | str):
-        from mkc.enum import Enum
+        from mkc.type import Enum
 
         if name and name in self.scope_types:
             raise Exception(f'type {name} is already defined in scope of this {self.scope_level}')
