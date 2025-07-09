@@ -29,7 +29,7 @@ class Codebase(Scope):
 
         self.object_files: list[ObjFile] = []
         self.include_paths: list[str] = []
-    
+
     def add_include_path(self, path: str):
         path = os.path.abspath(path)
 
@@ -49,12 +49,18 @@ class Codebase(Scope):
             if filename in obj.link_files:
                 return obj.link_files[filename]
 
+            for include_path in self.include_paths:
+                cur = os.path.normpath(f'{include_path}/{filename}')
+                if cur in obj.link_files:
+                    return obj.link_files[cur]
+
         return None
 
-    def generate(self):
+    def generate(self) -> dict[str, File]:
+        res: dict[str, File] = {}
+
         for obj in self.object_files:
             for path, source in obj.link_files.items():
-                os.makedirs(os.path.dirname(path), exist_ok=True)
-                with open(path, 'w') as file:
-                    file.write(f'{source}')
+                res[path] = f'{source}'
 
+        return res
