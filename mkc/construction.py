@@ -1,7 +1,6 @@
 
 from mkc.scope import Scope
-from mkc.expr import Expr
-from mkc.operations import *
+from mkc.expr import *
 
 class Construction:
     def __init__(self):
@@ -12,7 +11,6 @@ class Construction:
 
 def as_construction(param):
     from mkc.expr import Expr
-    from mkc.operations import Nop
 
     if param is None:
         param = Nop()
@@ -41,7 +39,6 @@ class DeclVar(Construction):
         return  res
 
     def var(self):
-        from mkc.operations import Var
         return Var(self)
 
 class Block(Construction, Scope):
@@ -205,7 +202,6 @@ class Ret(Construction):
 
 class Switch(Construction):
     def __init__(self, parent_block, target: Expr, cases: list[tuple[Expr, Construction | Expr]] = [], default: Construction | Expr | None = None):
-        from mkc.operations import Literal
         super().__init__()
 
         self.parent_block = parent_block
@@ -217,7 +213,6 @@ class Switch(Construction):
         self.default: Construction = default and as_construction(default)
 
     def add_case(self, condition: Expr, construction: Construction | Expr):
-        from mkc.operations import Literal
 
         self.cases.append((Literal.expr_or_literal(condition), as_construction(construction)))
 

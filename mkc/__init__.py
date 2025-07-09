@@ -6,10 +6,7 @@ from mkc.type import *
 from mkc.base_types import *
 from mkc.construction import Ret, If, For, DeclVar
 from mkc.func import Func
-from mkc.expr import Expr
-from mkc.operations import Assign, BinOp, GetField, Initializer, Literal, Subscript, Var, Fn
-from mkc.operations import Add, Sub, Mul, Div, Mod, Shl, Shr, And, Or, Not, SizeOf
-from mkc.operations import LessThan, GreaterThen, LessOrEqual, GreaterOrEquals
+from mkc.expr import *
 from mkc.scope import Scope
 
 

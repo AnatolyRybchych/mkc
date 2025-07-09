@@ -35,7 +35,7 @@ class Scope:
         return self.find_var(name)
 
     def find_var(self, name: str):
-        from mkc.operations import Var
+        from mkc.expr import Var
 
         for scope_variables in self.all_in_all_scopes(lambda scope: scope.scope_variables):
             if name in scope_variables:

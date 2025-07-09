@@ -1,6 +1,6 @@
 from mkc.type import Type, FuncType
 from mkc.construction import Block, DeclVar
-from mkc.operations import Var
+from mkc.expr import Var
 
 class Func:
     def __init__(self, scope, ret: Type, name, *args: tuple[Type, str]):
@@ -16,7 +16,7 @@ class Func:
             self.body.scope_set_var(DeclVar(arg_type, arg_name))
 
     def __call__(self, *args):
-        from mkc.operations import Call, Fn
+        from mkc.expr import Call, Fn
         return Fn(self.name)(*args)
 
     def func_decl(self) -> DeclVar:
