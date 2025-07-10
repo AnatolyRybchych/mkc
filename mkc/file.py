@@ -4,6 +4,7 @@ from mkc.construction import DeclVar
 from mkc.func import Func
 from mkc.type import Type, FuncType
 from mkc.scope import Scope
+from mkc.include import Include
 
 import os 
 
@@ -21,13 +22,16 @@ class File:
         self.funcs: list[Func] = []
         self.enums: list[Enum] = []
 
-        self.includes: list[File] = []
+        self.includes: list[Include] = []
 
     def include_file(self, file):
-        assert isinstance(file, File)
-
-        self.translation_unit.scope_link(file.translation_unit)
-        self.includes.append(file)
+        if type(file) is File:
+            self.translation_unit.scope_link(file.translation_unit)
+            self.includes.append(Include(file.path))
+        elif type(file) is str:
+            self.includes.append(Include(file))
+        else:
+            raise Exception(f'file of type {type(file)} is incompatible with {type(self)}.include_file()')
 
     def set_include_guard(self, include_guard: str|None = None):
         self.include_guard = include_guard
@@ -111,7 +115,7 @@ class File:
             cat(f'')
 
         for include in self.includes:
-            cat(f'#include <{os.path.basename(include.path)}>')
+            cat(f'{include}')
 
         for typedef in self.typedefs:
             cat(f'{typedef};')
