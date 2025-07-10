@@ -82,11 +82,12 @@ class BinOp(Expr):
         super().__init__([lhs, rhs])
         self.precedence = precedence
         self.operation_sign = operation_sign
+        self.paren_precedence = precedence
 
     def __str__(self):
-        res = f'({self.childs[0]})' if self.childs[0].precedence > self.precedence else f'{self.childs[0]}'
+        res = f'({self.childs[0]})' if self.childs[0].precedence > self.paren_precedence else f'{self.childs[0]}'
         res += f'{self.operation_sign}'
-        res += f'({self.childs[1]})' if self.childs[1].precedence > self.precedence else f'{self.childs[1]}'
+        res += f'({self.childs[1]})' if self.childs[1].precedence > self.paren_precedence else f'{self.childs[1]}'
         return res
 
 class Assign(BinOp):
@@ -128,6 +129,9 @@ class SizeOf(UnOp):
 class Or(BinOp):
     def __init__(self, lhs, rhs):
         super().__init__(lhs, rhs, '||', 12)
+
+        # We want to have (a || (b && c)) even though (a || b && c) is the same (-Wparentheses)
+        self.paren_precedence = 10
 
 class NotEquals(BinOp):
     def __init__(self, lhs, rhs):
