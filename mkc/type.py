@@ -335,3 +335,14 @@ class Array(Type):
 
     def feild_declaration(self, name):
         return self.type.feild_declaration(f'{name}[{self.cnt or ''}]')
+
+class ExternType(Type):
+    def __init__(self, literal_name: str):
+        super().__init__()
+        self.literal_name = literal_name
+
+    def type_name(self):
+        return self.literal_name
+
+    def feild_declaration(self, name):
+        return f'{self.type_name()} {name}'

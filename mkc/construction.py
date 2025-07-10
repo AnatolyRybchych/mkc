@@ -166,10 +166,9 @@ class If(Construction):
         self.then: Block = Block(parent_block)
         self.then.add_line(as_construction(then))
 
-        self.otherwice: Block | None = None
+        self.otherwice = Block(parent_block)
 
         if otherwice is not None:
-            self.otherwice = Block(parent_block)
             self.otherwice.add_line(as_construction(otherwice))
 
     def __str__(self) -> str:
@@ -179,7 +178,9 @@ class If(Construction):
             then.add_line(self.then)
 
         result = f'if ({self.condition}) {then}\n'
-        if self.otherwice:
+        if len(self.otherwice.lines) == 1 and type(self.otherwice.lines[0]) is If:
+            result += f'else {self.otherwice.lines[0]}\n'
+        elif self.otherwice.lines:
             result += f'else {self.otherwice}\n'
 
         return result

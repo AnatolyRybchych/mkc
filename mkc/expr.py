@@ -1,11 +1,15 @@
 
 import math
 from mkc.type import Type
+from typing import Self
 
 class Expr:
-    def __init__(self, childs: list):
+    def __init__(self, childs: list[Self]):
         self.precedence = math.inf
-        self.childs = childs
+        self.childs: list[Self] = childs
+
+    def parenthesize(self, expr: Self) -> bool:
+        return self.precedence > expr.precedence
 
     def get_childs(self) -> list:
         raise Exception(f'{type(self)}.get_childs() -> list[Expr] is not implemented')
@@ -60,7 +64,10 @@ class Expr:
         elif type(key) is int:
             return Subscript(self, Literal(key))
         elif type(key) is str:
-            return GetField(self, key)
+            if type(self) is Deref:
+                return GetRefField(self.expr, key)
+            else:
+                return GetField(self, key)
         else:
             raise Exception(f'{type(key)} is not a propper selector')
 
@@ -74,7 +81,7 @@ class UnOp(Expr):
         self.operation_fmt = operation_fmt
 
     def __str__(self):
-        res = f'({self.childs[0]})' if self.childs[0].precedence > self.precedence else f'{self.childs[0]}'
+        res = f'({self.childs[0]})' if self.childs[0].parenthesize(self) else f'{self.childs[0]}'
         return self.operation_fmt.format(res)
 
 class BinOp(Expr):
@@ -82,12 +89,11 @@ class BinOp(Expr):
         super().__init__([lhs, rhs])
         self.precedence = precedence
         self.operation_sign = operation_sign
-        self.paren_precedence = precedence
 
     def __str__(self):
-        res = f'({self.childs[0]})' if self.childs[0].precedence > self.paren_precedence else f'{self.childs[0]}'
+        res = f'({self.childs[0]})' if self.childs[0].parenthesize(self) else f'{self.childs[0]}'
         res += f'{self.operation_sign}'
-        res += f'({self.childs[1]})' if self.childs[1].precedence > self.paren_precedence else f'{self.childs[1]}'
+        res += f'({self.childs[1]})' if self.childs[1].parenthesize(self) else f'{self.childs[1]}'
         return res
 
 class Assign(BinOp):
@@ -118,6 +124,12 @@ class And(BinOp):
     def __init__(self, lhs, rhs):
         super().__init__(lhs, rhs, '&&', 11)
 
+    def parenthesize(self, expr: Expr) -> bool:
+        if type(expr) is Or:
+            return True
+        else:
+            return super().parenthesize(expr)
+
 class Not(UnOp):
     def __init__(self, expr):
         super().__init__(expr, '!{}', 2)
@@ -129,9 +141,6 @@ class SizeOf(UnOp):
 class Or(BinOp):
     def __init__(self, lhs, rhs):
         super().__init__(lhs, rhs, '||', 12)
-
-        # We want to have (a || (b && c)) even though (a || b && c) is the same (-Wparentheses)
-        self.paren_precedence = 10
 
 class NotEquals(BinOp):
     def __init__(self, lhs, rhs):
@@ -172,10 +181,22 @@ class GetField(Expr):
         self.precedence = 1
 
     def __str__(self):
-        if self.childs[0].precedence > self.precedence:
+        if self.childs[0].parenthesize(self):
             return f'({self.childs[0]}).{self.field}'
         else:
             return f'{self.childs[0]}.{self.field}'
+
+class GetRefField(Expr):
+    def __init__(self, lhs: Expr, field: str):
+        super().__init__([lhs])
+        self.field = field
+        self.precedence = 1
+
+    def __str__(self):
+        if self.childs[0].parenthesize(self):
+            return f'({self.childs[0]})->{self.field}'
+        else:
+            return f'{self.childs[0]}->{self.field}'
 
 class Call(Expr):
     def __init__(self, callable: Expr, *args: Expr):
@@ -183,7 +204,7 @@ class Call(Expr):
         self.precedence = 1
 
     def __str__(self):
-        if self.childs[0].precedence > self.precedence:
+        if self.childs[0].parenthesize(self):
             res = f'({self.childs[0]})'
         else:
             res = f'{self.childs[0]}'
@@ -209,7 +230,7 @@ class Deref(Expr):
         self.expr = expr
 
     def __str__(self):
-        if self.expr.precedence > self.precedence:
+        if self.expr.parenthesize(self):
             return f'*({self.expr})'
         else:
             return f'*{self.expr}'
@@ -228,7 +249,10 @@ class Subscript(Expr):
         self.precedence = 1
 
     def __str__(self) -> str:
-        return f'({self.childs[0]})[{self.field}]'
+        if self.childs[0].parenthesize(self):
+            return f'({self.childs[0]})[{self.field}]'
+        else:
+            return f'{self.childs[0]}[{self.field}]'
 
 class Literal(Expr):
     def __init__(self, value: int | str, flavour = 'default'):
@@ -281,7 +305,7 @@ class Literal(Expr):
                 else:
                     value = f'\\x{hex(self.value)[2:]}'
             else:
-                value = self.value
+                value = Literal.escape_string(self.value)
 
             return f"'{value}'"
 
