@@ -134,6 +134,15 @@ class Not(UnOp):
     def __init__(self, expr):
         super().__init__(expr, '!{}', 2)
 
+class PostInc(UnOp):
+    def __init__(self, expr):
+        super().__init__(expr, '{}++', 2)
+
+class Cast(UnOp):
+    def __init__(self, type: Type, expr):
+        self.type = type
+        super().__init__(expr, f'({type.type_name()})' + '({})', 1)
+
 class SizeOf(UnOp):
     def __init__(self, expr):
         super().__init__(expr, 'sizeof {}', 2)
