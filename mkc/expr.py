@@ -147,6 +147,15 @@ class SizeOf(UnOp):
     def __init__(self, expr):
         super().__init__(expr, 'sizeof {}', 2)
 
+class SizeOfType(Expr):
+    def __init__(self, type: Type):
+        super().__init__([])
+        self.type: Type = type
+        self.precedence = 1
+
+    def __str__(self):
+        return f'sizeof({self.type.type_name()})'
+
 class Or(BinOp):
     def __init__(self, lhs, rhs):
         super().__init__(lhs, rhs, '||', 12)
@@ -282,7 +291,7 @@ class Literal(Expr):
         elif isinstance(target, Expr):
             return target
         else:
-            raise Exception(f'The {type(target)} is neither a literal or expresson')
+            raise Exception(f'The {type(target)} is neither a literal or expression')
 
     def escape_string(text: str) -> str:
         ESC = {

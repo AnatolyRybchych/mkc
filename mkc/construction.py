@@ -164,7 +164,8 @@ class If(Construction):
         self.parent_block = parent_block
         self.condition: Expr = condition
         self.then: Block = Block(parent_block)
-        self.then.add_line(as_construction(then))
+        if then:
+            self.then.add_line(as_construction(then))
 
         self.otherwice = Block(parent_block)
 

@@ -287,7 +287,7 @@ class Enum(Type):
         from mkc.construction import DeclVar
         import mkc as c
 
-        assert key in self.keys() or f'{self.prefix}{key}' in self.keys()
+        assert key in self.keys() or f'{self.prefix}{key}' in self.keys(), f'{key} is not in {self}'
 
         return c.Var(DeclVar(c.int, f'{self.prefix}{key}'))
 
