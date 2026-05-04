@@ -176,7 +176,7 @@ class Struct(Type, Scope, Depends):
 
     def add_field(self, type: Type, name: str):
         is_duplicate = any(field_name == name for _, field_name in self.fields)
-        assert not is_duplicate
+        assert not is_duplicate, f'trying to add {name} to {[name for _, name in self.fields]}'
 
         self.depend_on(type)
         self.fields.append((type, name))
